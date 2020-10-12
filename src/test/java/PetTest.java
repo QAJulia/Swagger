@@ -2,7 +2,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import io.restassured.response.Response;
 import model.Pet;
-import model.Pets;
 import model.ResponseBodyForDelete;
 import org.apache.http.protocol.HTTP;
 import org.testng.annotations.Test;
@@ -10,6 +9,7 @@ import org.testng.annotations.Test;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.Arrays;
 
 import static io.restassured.RestAssured.given;
 import static org.testng.Assert.assertEquals;
@@ -66,12 +66,12 @@ public class PetTest {
     }
 
     @Test
-    public void findPetsByStatus() {
+    public void findPetsByStatus() throws FileNotFoundException {
         Response response = given()
                 .when()
                 .get("https://petstore.swagger.io/v2/pet/findByStatus?status=sold")
                 .then()
-                .log().body()
+                //.log().body()
                 .statusCode(200)
                 .extract().response();
 
@@ -79,9 +79,9 @@ public class PetTest {
                 .excludeFieldsWithoutExposeAnnotation()
                 .create();
 
-        Pets pets = gson.fromJson(response.body().asString(), Pets.class);
-        System.out.println(pets);
-//ШОТА Я ЗАСТРЯЛА, НЕ МОГУ СТРИНГАНУТЬ РЕСПОНС
+        Pet[] pets = gson.fromJson(response.body().asString(), Pet[].class);
+        Pet[] jsonPets = gson.fromJson(new FileReader(new File("src/test/resources/soldPets.json")), Pet[].class);
+        assertEquals(pets, jsonPets, "Список изменился");
     }
 
     @Test
