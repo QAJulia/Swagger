@@ -9,19 +9,11 @@ import org.testng.annotations.Test;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.Arrays;
 
 import static io.restassured.RestAssured.given;
 import static org.testng.Assert.assertEquals;
 
 public class PetTest {
-    public PetTest() throws FileNotFoundException {
-    }
-    /*
-1. Реализовать проверку тела ответа через файл из ресурсов (enpoint на выбор)
-2. Реализовать проверку через jsonpath (enpoint на выбор)
-3. Реализовать проверку через десериализацию и сравнение объектов (enpoint на выбор)
-     */
 
     @Test
     public void addPet() throws FileNotFoundException {
